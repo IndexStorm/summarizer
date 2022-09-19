@@ -11,8 +11,6 @@ services:
       - '80:3001'
     # environment:
     #   FLASK_DEBUG: "${FLASK_DEBUG:?}"
-    networks:
-      - app
     logging:
       driver: json-file
       options:
