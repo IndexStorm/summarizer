@@ -1,0 +1,9 @@
+Flask
+flask-cors
+gunicorn
+torch
+torchvision
+transformers
+newspaper3k
+prometheus-client
+prometheus-flask-exporter

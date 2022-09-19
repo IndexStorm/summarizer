@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 5s
+
+  external_labels:
+    monitor: "summary-ml"
+
+rule_files:
+
+scrape_configs:
+  - job_name: "prometheus"
+    static_configs:
+      - targets: [ "prometheus:9090" ]
+
+  - job_name: "api-stats"
+    static_configs:
+      - targets: [ "summary_api:3001" ]
