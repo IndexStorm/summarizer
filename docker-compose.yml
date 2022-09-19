@@ -1,10 +1,5 @@
 version: "3.9"
 
-networks:
-  app:
-    name: idx-storm-nginx
-    external: true
-
 services:
   ml:
     container_name: summary_api
@@ -12,6 +7,8 @@ services:
     build:
       context: .
       dockerfile: docker/ml/Dockerfile
+    ports:
+      - '80:3001'
     # environment:
     #   FLASK_DEBUG: "${FLASK_DEBUG:?}"
     networks:
@@ -21,23 +18,3 @@ services:
       options:
         max-size: 4m
         max-file: "1"
-  # prometheus:
-  #   container_name: summary_prometheus
-  #   restart: always
-  #   build:
-  #     context: .
-  #     dockerfile: docker/prometheus/Dockerfile
-  #   networks:
-  #     - app
-  #   depends_on:
-  #     - ml
-  # grafana:
-  #   container_name: summary_grafana
-  #   restart: always
-  #   build:
-  #     context: .
-  #     dockerfile: docker/grafana/Dockerfile
-  #   networks:
-  #     - app
-  #   depends_on:
-  #     - prometheus

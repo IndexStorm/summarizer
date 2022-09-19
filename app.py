@@ -10,18 +10,18 @@ import torch
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-# summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
-tokenizer = BertTokenizerFast.from_pretrained('mrm8488/bert-small2bert-small-finetuned-cnn_daily_mail-summarization')
-model = EncoderDecoderModel.from_pretrained('mrm8488/bert-small2bert-small-finetuned-cnn_daily_mail-summarization')
+summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+# tokenizer = BertTokenizerFast.from_pretrained('mrm8488/bert-small2bert-small-finetuned-cnn_daily_mail-summarization')
+# model = EncoderDecoderModel.from_pretrained('mrm8488/bert-small2bert-small-finetuned-cnn_daily_mail-summarization')
 
-def generate_summary(text):
-    # cut off at BERT max length 512
-    inputs = tokenizer([text], padding="max_length", truncation=True, max_length=512, return_tensors="pt")
-    input_ids = inputs.input_ids
-    attention_mask = inputs.attention_mask
-    output = model.generate(input_ids, attention_mask=attention_mask)
+# def generate_summary(text):
+#     # cut off at BERT max length 512
+#     inputs = tokenizer([text], padding="max_length", truncation=True, max_length=512, return_tensors="pt")
+#     input_ids = inputs.input_ids
+#     attention_mask = inputs.attention_mask
+#     output = model.generate(input_ids, attention_mask=attention_mask)
 
-    return tokenizer.decode(output[0], skip_special_tokens=True)
+#     return tokenizer.decode(output[0], skip_special_tokens=True)
 
 metrics = PrometheusMetrics(app)
 
@@ -51,9 +51,9 @@ def similarity_route():
         return "Only support 1000 words now", 400
     else:
         try:
-            # result = summarizer(text, max_length=max(130, num_of_words // 4) , min_length=30, do_sample=False)
-            result = generate_summary(text)
-            result = {'summary': result}
+            result = summarizer(text, max_length=max(130, num_of_words // 3) , min_length=30, do_sample=False)
+            # result = generate_summary(text)
+            # result = {'summary': result}
         except:
             return "Failed to summarize", 500
 
